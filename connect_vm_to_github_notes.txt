@@ -1,0 +1,48 @@
+HOW TO CONNECT A VM TO GITHUB
+===================================
+
+🧩 1. Check if Git is installed
+-----------------------------------
+git --version
+If not:
+sudo apt update && sudo apt install git -y
+
+🧩 2. Configure Git username & email
+-----------------------------------
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+
+🧩 3. Generate SSH key
+-----------------------------------
+ssh-keygen -t ed25519 -C "your_email@example.com"
+(Press Enter for all prompts)
+
+🧩 4. Start SSH agent & add key
+-----------------------------------
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+🧩 5. Copy SSH key to clipboard
+-----------------------------------
+cat ~/.ssh/id_ed25519.pub
+(Copy the whole output)
+
+🧩 6. Add key to GitHub
+-----------------------------------
+1. Go to https://github.com/settings/keys
+2. Click “New SSH key” → paste the copied key → save.
+
+🧩 7. Test connection
+-----------------------------------
+ssh -T git@github.com
+Expected message:
+Hi <username>! You've successfully authenticated...
+
+🧩 8. Clone or push to repo
+-----------------------------------
+git clone git@github.com:username/repo-name.git
+or
+git remote add origin git@github.com:username/repo-name.git
+git push -u origin main
+
+Confidence Level: 100%

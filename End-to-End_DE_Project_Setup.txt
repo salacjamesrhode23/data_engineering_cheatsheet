@@ -1,0 +1,103 @@
+# End-to-End Data Engineering Project Setup Checklist
+
+- [/] **Create a new project repository (Main Account)**
+	- Fork Repository to Contributor account
+	- Git clone to Local Machine
+
+- [/] **Create a New Project in GCP
+
+- [/] **Create VM instance**
+	- Enable Compute Engine API
+	- Choose OS, CPU, Memory, and storage
+	- Allow full access to all Cloud APIs
+
+- [/] **Create SSH Key within Virtual Machine**
+	- Change file permission (owner can only read and write the file)
+
+- [/] **Create Google Cloud Service Account**
+      **Or use the existing Compute Engine default service account**
+	- Create new service account key
+
+- [/] **Upload and secure service key in VM**
+	- Make directory and move/copy my-creds.json
+	- Change file permission (owner can only read and write the file)
+	- ①Export GOOGLE_APPLICATION_CREDENTIALS path in .bashrc
+
+- [/] **Install Core Data Tools in VM**
+	- Anaconda (Download from Anaconda Installer online) - (Create an Python3.8 - 3.11 environment for pyspark compatibility)
+	- Docker (Download from https://get.docker.com/)
+	- dbt-core (Install within conda environment together with Adapter)
+	- OpenJDK Java Development Kit (Download from https://jdk.java.net/archive/ to ~/spark folder) and add env variables ② 
+	- SPARK (Download from https://archive.apache.org/dist/spark/spark-3.3.2/ to ~/spark folder) and add env variables ③
+	  (Make sure python version is >8<11 or else create a new environment)
+	- Cloud Storage Connector for Hadoop (Download from https://cloud.google.com/dataproc/docs/concepts/connectors/cloud-storage#clusters to ~/connector folder)
+	- BigQuery Connector for Sparks (Download from https://github.com/GoogleCloudDataproc/spark-bigquery-connector/releases to ~/folder)
+
+- [/] **Setup Environmental Variables ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩
+	- ① export GOOGLE_APPLICATION_CREDENTIALS="$HOME/creds/my-creds.json"
+	- ② export JAVA_HOME="${HOME}/spark/jdk-11.0.2"
+	    export PATH="${JAVA_HOME}/bin:${PATH}"
+	- ③ export SPARK_HOME="${HOME}/spark/spark-3.3.2-bin-hadoop3"
+	    export PATH="${SPARK_HOME}/bin:${PATH}"
+	-   export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"
+	    export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.5-src.zip:$PYTHONPATH"
+
+- [/] **Connect GitHub to VM instance**
+	- Configure Git username & email
+	- Start SSH agent & add key
+	- Add public key to GitHub
+
+- [/] **Create GCS Bucket and BigQuery Dataset**
+
+- [/] **Connect Spark to GCS**
+	- Start Master and Workers from ${SPARK_HOME}/sbin directory
+	- Configure Connector in Jupyter Notebook file
+	- Test connection with sample data
+
+- [ ] **Setup IAM permissions and roles in GCP**
+	- Storage Object Administrator
+
+	- Compute Instance Administrator (v1)
+	- Service Account User
+	- BigQuery Administrator
+
+___________________________________________________________________________________________________________
+
+
+- [ ] **Create project directories**
+      ```
+      project_name/
+        ├── dags/
+        ├── docker/
+        ├── ingestion/
+        ├── dbt/
+        ├── notebooks/
+        ├── lib/        # for connectors/jars
+        └── scripts/
+      ```
+      - Include paths for PySpark, GCS, BigQuery connectors
+
+
+dR4m%T6nb&G+k#F
+
+- [ ] **Create GCS buckets**
+      - Organize by environment (raw, processed, analytics)
+      - Apply bucket-level permissions
+
+- [ ] **Create BigQuery datasets**
+      - Structure datasets for staging, warehouse, and analytics tables
+
+- [ ] **Verify connectivity**
+      - Test access to GCS and BigQuery using Python or Spark
+
+- [ ] **Optional: Initialize orchestration and automation tools**
+      - Airflow/Kestra DAGs
+      - Docker Compose for local orchestration
+      - Configure dbt project with profiles and sample models
+
+- [ ] **Optional: Configure logging, monitoring, and backup**
+      - Enable Spark and pipeline logs
+      - Set up backup/restore for critical datasets
+
+- [ ] **Document setup steps and configurations**
+      - Include installation instructions, environment variables, folder structure, and credentials handling
